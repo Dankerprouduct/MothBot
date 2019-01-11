@@ -21,6 +21,8 @@ deathPhrases ={'IM MELTING, MELTING', 'i always wanted to die', 'well this is th
 
 global checkForMessage
 checkForMessage = True
+global pollingUsers
+pollingUsers = False
 
 @client.event
 async def on_message(message):
@@ -29,11 +31,44 @@ async def on_message(message):
     # we do not want the bot to reply to itself
     if (message.author.bot): return
 
-    if message.content == '!stop': await client.logout()
+    if message.content == '!stop' 
         mAuthor = message.mAuthor
         await client.send_message(message.channel, random.choice(deathPhrases))
+        await client.logout()
+        
+    #Polling
+    if message.content == '!mothbot poll'
+        yays = 0
+        nays = 0
+        mAuthor - message.author
+        checkForMessage = False
+        await client.send_message(message.channel, "What is your question?")
+        pollingUsers = True 
+        response = await client.wait_for_message()
+        question = response
+        while pollingUsers or response.content.isspace() or not response.contentor or (response.author != mAuthor) or response.author.bot or response.content.lower() in bannedWords:
+            await client.send_message(message.channel, "no")
+            response = await client.wait_for_message()
+        
+        question = response
+        await client.send_message(message.channel, f'starting poll for f {question.content}')
+        
+        answers = await client.wait_for_message()
+        while answers.content.isspace() or not answers.content or answers.author.bot or answers.content.lower() in bannedWords or pollingUsers
+            if(answers.content.lower() == "yay")
+                yays += 1
+            if(answers.content.lower() == "nay")
+                nays += 1
+            if(answers.content.lower() == '!mothbot stop poll')                
+                await client.send_message(f"And the results for {question} are in...")
+                await client.send_message(f"Yays: {yays}  --- Nays{nays}")
+                pollingUsers = False
+                checkForMessage = True
+            answers = await client.wait_for_message()
+        checkForMessage = True
 
 
+    #random phrases 
     if not message.author.bot and checkForMessage:
         for word in defaultWords:
             if word in message.content.lower():
@@ -45,6 +80,7 @@ async def on_message(message):
                     msg = addedWords[word]
                     await client.send_message(message.channel, msg)
     
+    #adds phrases 
     if message.content == '!mothbot add':
         mAuthor = message.author
         checkForMessage = False
