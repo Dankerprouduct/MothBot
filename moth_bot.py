@@ -17,6 +17,8 @@ addedWords = {}
 
 bannedWords = ["gopi", "darren", "david", "josh",]
 
+deathPhrases ={'IM MELTING, MELTING', 'i always wanted to die', 'well this is the end for me', 'sweet death, how i longed for thee'}
+
 global checkForMessage
 checkForMessage = True
 
@@ -28,6 +30,9 @@ async def on_message(message):
     if (message.author.bot): return
 
     if message.content == '!stop': await client.logout()
+        mAuthor = message.mAuthor
+        await client.send_message(message.channel, random.choice(deathPhrases))
+
 
     if not message.author.bot and checkForMessage:
         for word in defaultWords:
